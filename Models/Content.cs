@@ -8,11 +8,15 @@ public class ContentModel
     public DateTime PublicationDate { get; set; }
     public List<string> AssociatedMedia { get; set; }
 
-    public ContentModel()
+    public ContentModel() : this(string.Empty, string.Empty)
     {
-        Title = string.Empty;
-        Body = string.Empty;
-        PublicationDate = DateTime.Now;
-        AssociatedMedia = new List<string>();
+    }
+
+    public ContentModel(string title, string body, DateTime publicationDate = default, List<string> associatedMedia = null)
+    {
+        Title = title;
+        Body = body;
+        PublicationDate = publicationDate == default ? DateTime.Now : publicationDate;
+        AssociatedMedia = associatedMedia ?? new List<string>();
     }
 }
