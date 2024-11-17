@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 public interface IContentRepository
@@ -54,8 +53,8 @@ public class ContentService : IContentService
 
     public ContentService(IContentRepository contentRepository, ICategoryRepository categoryRepository)
     {
-        _contentRepository = contentRepository;
-        _categoryRepository = categoryRepository;
+        _contentRepository = contentRepository ?? throw new ArgumentNullException(nameof(contentRepository));
+        _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
     }
 
     public async Task<Content> CreateContentAsync(Content content)
