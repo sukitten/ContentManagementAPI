@@ -57,43 +57,19 @@ public class ContentService : IContentService
         _categoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
     }
 
-    public async Task<Content> CreateContentAsync(Content content)
-    {
-        return await _contentRepository.CreateContentAsync(content);
-    }
+    public async Task<Content> CreateContentAsync(Content content) => await _contentRepository.CreateContentAsync(content);
 
-    public async Task<Content> UpdateContentAsync(Content content)
-    {
-        return await _contentRepository.UpdateContentAsync(content);
-    }
+    public async Task<Content> UpdateContentAsync(Content content) => await _contentRepository.UpdateContentAsync(content);
 
-    public async Task<bool> DeleteContentAsync(Guid contentId)
-    {
-        return await _contentRepository.DeleteContentAsync(contentId);
-    }
+    public async Task<bool> DeleteContentAsync(Guid contentId) => await _contentRepository.DeleteContentAsync(contentId);
 
-    public async Task<IEnumerable<Content>> GetAllContentsAsync()
-    {
-        return await _contentRepository.GetAllContentsAsync();
-    }
+    public async Task<IEnumerable<Content>> GetAllContentsAsync() => await _contentRepository.GetAllContentsAsync();
 
-    public async Task<Content> GetContentByIdAsync(Guid contentId)
-    {
-        return await _contentRepository.GetContentByIdAsync(contentId);
-    }
+    public async Task<Content> GetContentByIdAsync(Guid contentId) => await _contentRepository.GetContentByIdAsync(contentId);
 
-    public async Task<Category> CreateCategoryAsync(Category category)
-    {
-        return await _categoryRepository.CreateCategoryAsync(category);
-    }
+    public async Task<Category> CreateCategoryAsync(Category category) => await _categoryRepository.CreateCategoryAsync(category);
 
-    public async Task<Category> UpdateCategoryAsync(Category category)
-    {
-        return await _categoryRepository.UpdateCategoryAsync(category);
-    }
+    public async Task<Category> UpdateCategoryAsync(Category category) => await _categoryRepository.UpdateCategoryAsync(category);
 
-    public async Task<bool> DeleteCategoryAsync(Guid categoryId)
-    {
-        return await _categoryRepository.DeleteCategoryAsync(categoryId);
-    }
+    public async Task<bool> DeleteCategoryAsync(Guid categoryId) => await _categoryRepository.DeleteCategoryAsync(categoryId);
 }
