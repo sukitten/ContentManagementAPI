@@ -29,7 +29,7 @@ public class ApplicationDbContext : DbContext
     }
 }
 
-public interface IRepository<T>
+public interface IRepository<T> where T : class
 {
     Task<IEnumerable<T>> GetAllAsync();
     Task<T> GetByIdAsync(int id);
@@ -38,86 +38,56 @@ public interface IRepository<T>
     Task DeleteAsync(int id);
 }
 
-public class ContentRepository : IRepository<Content>
+public class Repository<T> : IRepository<T> where T : class
 {
     private readonly ApplicationDbContext _context;
+    private readonly DbSet<T> _dbSet;
 
-    public ContentRepository(ApplicationDbContext context)
+    public Repository(ApplicationDbContext context)
     {
         _context = context;
+        _dbSet = _context.Set<T>();
     }
 
-    public async Task<IEnumerable<Content>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _context.Contents.ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
-    public async Task<Content> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(int id)
     {
-        return await _context.Contents.FindAsync(id);
+        return await _dbSet.FindAsync(id);
     }
 
-    public async Task InsertAsync(Content entity)
+    public async Task InsertAsync(T entity)
     {
-        _context.Contents.Add(entity);
+        _dbSet.Add(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Content entity)
+    public async Task UpdateAsync(T entity)
     {
-        _context.Contents.Update(entity);
+        _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
-        var item = await _context.Contents.FindAsync(id);
+        var item = await _dbSet.FindAsync(id);
         if (item != null)
         {
-            _context.Contents.Remove(item);
+            _dbSet.Remove(item);
             await _context.SaveChangesAsync();
         }
     }
 }
 
-public class MediaRepository : IRepository<Media>
+public class ContentRepository : Repository<Content>
 {
-    private readonly ApplicationDbContext _context;
+    public ContentRepository(ApplicationDbContext context) : base(context) {}
+}
 
-    public MediaRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task<IEnumerable<Media>> GetAllAsync()
-    {
-        return await _context.Medias.ToListAsync();
-    }
-
-    public async Task<Media> GetByIdAsync(int id)
-    {
-        return await _context.Medias.FindAsync(id);
-    }
-
-    public async Task InsertAsync(Media entity)
-    {
-        _context.Medias.Add(entity);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Media entity)
-    {
-        _context.Medias.Update(entity);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var item = await _context.Medias.FindAsync(id);
-        if (item != null)
-        {
-            _context.Medias.Remove(item);
-            await _context.SaveChangesAsync();
-        }
-    }
+public class MediaRepository : Repository<Media>
+{
+    public MediaRepository(ApplicationDbContext context) : base(context) {}
 }
